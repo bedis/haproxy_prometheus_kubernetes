@@ -37,7 +37,7 @@ kubectl create secret generic hapee-kubeconfig \
 	--from-file=./ca/ingress-controller.pem \
 	--from-file=./ca/ingress-controller.key
 ```
-* Get a copy of **prometheus.lua** from [https://github.com/bedis/haproxy_lua_prometheus_exporter/blob/master/prometheus.lua](https://github.com/bedis/haproxy_lua_prometheus_exporter/blob/master/prometheus.lua) and put it into **hapee-ingress** directory
+* Get a copy of [prometheus.lua](https://github.com/bedis/haproxy_lua_prometheus_exporter/blob/master/prometheus.lua) and put it into **hapee-ingress** directory
 * Create the HAProxy configuration secret:
 ```bash
 kubectl create secret generic hapee-configuration \
