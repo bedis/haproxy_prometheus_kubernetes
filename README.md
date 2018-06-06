@@ -3,6 +3,14 @@ Use HAProxy in conjunction with Prometheus to feed Kubernetes Horizontal Pod Aut
 
 Please read carefuly the YAML files proposed here. There might be some adjustments to be peformed to make them match your environment.
 
+The purpose of this repository is to share YAML files to:
+* Run an HAProxy based ingress controller
+* Monitor the ingress controller metrics using prometheus
+* Expose prometheus metrics into Kuernetes API (custom metrics)
+* Configure Kubernetes HPA to scale an application based on custom metrics
+
+**NOTE**: inspired by [Frederic Branczyk](https://coreos.com/blog/autoscaling-with-prometheus-and-kubernetes-metrics-apis)
+
 ## HAProxy Ingress Controller
 
 ### If Using HAProxy Enterprise ingress controller
