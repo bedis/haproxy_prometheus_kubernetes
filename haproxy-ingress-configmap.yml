@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-ingress
+data:
+  backend-check-interval: 1s
+  backend-server-slots-increment: "10"
+  dynamic-scaling: "true"
+  hsts: "False"
+  ssl-redirect: "False"

@@ -1,0 +1,13 @@
+groups:
+- name: haproxy_backend
+  rules:
+
+  - record: haproxy_backend_http_response_time_default_red_backend_8080
+    expr: haproxy_backend_http_response_time_average_seconds{backend="default-red-8080"}
+
+  - record: haproxy_backend_current_session_avg_default_red_8080
+    expr: sum(haproxy_server_current_sessions{backend="default-red-8080"}) by (service,namespace,job) / count(haproxy_server_up{backend="default-red-8080"} == 1) by (service,namespace,job)
+
+
+  - record: haproxy_backend_current_session_rate_upstream_default_backend
+    expr: haproxy_backend_current_session_rate{backend="upstream-default-backend"}

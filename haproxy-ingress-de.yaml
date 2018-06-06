@@ -1,0 +1,63 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: haproxy-ingress
+    app: haproxy-ingress-app
+  name: haproxy-ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: haproxy-ingress
+      app: haproxy-ingress-app
+  template:
+    metadata:
+      labels:
+        run: haproxy-ingress
+        k8s-app: haproxy-ingress-lb
+        app: haproxy-ingress-app
+    spec:
+      # comment imagePullSecrets if you use jcmoraisjr controller
+      imagePullSecrets:
+        - name: haptech-registry
+      containers:
+      - name: haproxy-ingress
+        imagePullPolicy: IfNotPresent
+        image: kubernetes-registry.haproxy.com/hapee-kubernetes:1.7r2
+#        image: quay.io/jcmoraisjr/haproxy-ingress
+        args:
+        - --kubeconfig=/etc/kubernetes/kubeconfig.yml
+        - --default-backend-service=$(POD_NAMESPACE)/default-app
+        - --configmap=$(POD_NAMESPACE)/haproxy-ingress
+#        - --default-ssl-certificate=default/tls-secret
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: stat
+          containerPort: 1936
+        - name: prometheus
+          containerPort: 1937
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /etc/kubernetes
+        - name: hapee-configuration
+          mountPath: /etc/haproxy/template
+      volumes:
+      - name: kubeconfig
+        secret:
+          secretName: hapee-kubeconfig
+      - name: hapee-configuration
+        secret:
+          secretName: hapee-configuration

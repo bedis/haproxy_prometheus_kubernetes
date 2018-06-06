@@ -1,0 +1,40 @@
+global:
+  evaluation_interval: 30s
+  scrape_interval: 30s
+  external_labels: {}
+rule_files:
+- "backend.rules"
+scrape_configs:
+- job_name: default/haproxy-ingress/0
+  honor_labels: false
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names:
+      - default
+  relabel_configs:
+  - action: keep
+    source_labels:
+    - __meta_kubernetes_service_label_app
+    regex: haproxy-ingress-app
+  - action: keep
+    source_labels:
+    - __meta_kubernetes_endpoint_port_name
+    regex: prometheus
+  - source_labels:
+    - __meta_kubernetes_namespace
+    target_label: namespace
+  - source_labels:
+    - __meta_kubernetes_pod_name
+    target_label: pod
+  - source_labels:
+    - __meta_kubernetes_service_name
+    target_label: service
+  - source_labels:
+    - __meta_kubernetes_service_name
+    target_label: job
+    replacement: ${1}
+  - target_label: endpoint
+    replacement: prometheus
+alerting:
+  alertmanagers: []
