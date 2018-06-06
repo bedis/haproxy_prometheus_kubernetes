@@ -1,0 +1,23 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+  name: red
+  namespace: default
+spec:
+  maxReplicas: 10
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: red
+  metrics:
+  - type: Object
+    object:
+      target:
+        kind: Service
+        name: haproxy-ingress
+      #metricName: haproxy_backend_current_session_avg_default_red_8080
+      #targetValue: 5
+      metricName: haproxy_backend_http_response_time_default_red_backend_8080
+      targetValue: 50m

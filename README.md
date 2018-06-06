@@ -82,3 +82,11 @@ metadata:
 ```bash
 kubectl create -f custom-metrics.yaml
 ```
+
+## Kubernetes
+
+* Finally, configure the Horizontal Pod Autoscaler (NOTE: update the application name and metrics accordingly to yoour environment)
+```bash
+kubectl create -f red-hpa.yaml
+```
+
